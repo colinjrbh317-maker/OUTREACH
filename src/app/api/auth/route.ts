@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const { password } = await request.json();
 
-  if (password !== (process.env.CRM_PASSWORD || "3478")) {
+  if (password !== "3478") {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
 

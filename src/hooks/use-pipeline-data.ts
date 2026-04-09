@@ -5,7 +5,11 @@ import type { CallQueueRow, FbQueueRow, LeadRow, PipelineLogRow, InstantlyStats 
 
 const REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
+const fetcher = (url: string) =>
+  fetch(url).then((r) => {
+    if (!r.ok) return null;
+    return r.json();
+  });
 
 export function useCallQueue(date?: string) {
   const d = date || new Date().toISOString().split("T")[0];

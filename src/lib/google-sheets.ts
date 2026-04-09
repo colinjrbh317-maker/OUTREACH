@@ -28,12 +28,17 @@ const SHEET_ID = () => {
 // ── Read helpers ──
 
 export async function readSheet(tabName: string): Promise<string[][]> {
-  const sheets = getSheets();
-  const res = await sheets.spreadsheets.values.get({
-    spreadsheetId: SHEET_ID(),
-    range: `'${tabName}'`,
-  });
-  return res.data.values || [];
+  try {
+    const sheets = getSheets();
+    const res = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID(),
+      range: `'${tabName}'`,
+    });
+    return res.data.values || [];
+  } catch {
+    // Tab doesn't exist yet (no pipeline run) — return empty
+    return [];
+  }
 }
 
 export async function readSheetAsObjects<T>(
